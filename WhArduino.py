@@ -26,12 +26,12 @@ for line in boards_lines:
 
 for line in boards_lines:
 	for k in model.keys():
-		match_vid = re.search(r'^' + k + r'\.vid\.[0-9]*=0x([A-F0-9]{4})', line)
-		match_pid = re.search(r'^' + k + r'\.pid\.[0-9]*=0x([A-F0-9]{4})', line)
+		match_vid = re.search(r'^' + k + r'\.vid\.[0-9]*=0x([a-fA-F0-9]{4})', line)
+		match_pid = re.search(r'^' + k + r'\.pid\.[0-9]*=0x([a-fA-F0-9]{4})', line)
 		if match_vid:
-			model[k][1].append(match_vid.group(1))
+			model[k][1].append(match_vid.group(1).upper())
 		elif match_pid:
-			model[k][2].append(match_pid.group(1))
+			model[k][2].append(match_pid.group(1).upper())
 
 prods = {'0001':'Arduino Uno'      , '0043':'Arduino Uno R3',
 		 '0010':'Arduino Mega 2560', '0042':'Arduino Mega 2560 R3',
