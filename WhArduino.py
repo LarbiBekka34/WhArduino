@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import re
 from serial.tools.list_ports import comports
 
@@ -13,7 +15,7 @@ sdevs = comports()
 intdev = []
 for dev in sdevs:
 	if dev[2]!= 'n/a':
-		intdev.append(dev)		
+		intdev.append(dev)
 
 ptn = 'USB VID:PID=([A-F0-9]{4}):([A-F0-9]{4}) '
 arduinos = []
@@ -23,11 +25,11 @@ for dev in intdev:
 		if match.group(2) in prods:
 			data = (prods[match.group(2)], dev[0])
 		else:
-			data = ('Arduino', dev[0]) 		
+			data = ('Arduino', dev[0])
 	elif match and match.group(1) == VIDs[1]:
 			data = ('FTDI', dev[0])
 	arduinos.append(data)
-	
+
 if not arduinos:
 	print 'No arduino connected !!!'
 else:
