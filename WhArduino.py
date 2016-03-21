@@ -33,6 +33,15 @@ for line in boards_lines:
 		elif match_pid:
 			model[k][2].append(match_pid.group(1).upper())
 
+#removing empty elements with no VID:PID
+noref_el = []
+for element in model:
+	if not model[element][1]:
+		noref_el.append(element)
+
+for el in noref_el:
+	del model[el]
+
 prods = {'0001':'Arduino Uno'      , '0043':'Arduino Uno R3',
 		 '0010':'Arduino Mega 2560', '0042':'Arduino Mega 2560 R3',
 		 '003F':'Arduino Mega ADK' , '0044':'Arduino Mega ADK R3'}
@@ -41,7 +50,10 @@ prods = {'0001':'Arduino Uno'      , '0043':'Arduino Uno R3',
 #Old Arduinos use the FTDI VID/PID (VID=0x0403)
 VIDs  = ['2341', '0403']
 
+
 sdevs = comports()
+
+#devices of interest
 intdev = []
 for dev in sdevs:
 	if dev[2]!= 'n/a':
@@ -49,17 +61,22 @@ for dev in sdevs:
 
 ptn = 'USB VID:PID=([A-F0-9]{4}):([A-F0-9]{4}) '
 arduinos = []
+
 for dev in intdev:
-	match = re.search(ptn,dev[2])
-	if match and match.group(1) == VIDs[0]:
-		if match.group(2) in prods:
-			data = (prods[match.group(2)], dev[0])
-		else:
-			data = ('Arduino', dev[0])
-	elif match and match.group(1) == VIDs[1]:
-			data = ('FTDI', dev[0])
-	else:
-		data = ('Unknown', dev[0])
+	match = re.search(ptn, dev[2])
+	if match:
+		data = ()
+		for element in model:
+			if match.group(2) in model[element][2] and match.group(1) in model[element][1]:
+				data = (model[element][0], dev[0], match.group(0))
+		if not data:
+			if   match.group(1) == VIDs[0]:
+				data = ('Arduino', dev[0], match.group(0))
+			elif match.group(1) == VIDs[1]:
+				data = ('FTDI', dev[0], match.group(0)) 
+       			else:
+                		data = ('Unknown', dev[0], match.group(0))
+ 	
 	arduinos.append(data)
 
 if not arduinos:
@@ -67,4 +84,5 @@ if not arduinos:
 else:
 	print 'Connected Arduino device(s):'
 	for ard in arduinos:
-		print ard[0], ' at ', ard[1]
+		print ard[0], ' ', ard[2], ' at ', ard[1]
+
