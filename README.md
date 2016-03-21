@@ -9,17 +9,12 @@ A python script that helps tracking how many and what kind of Arduino Boards are
 python WhArduino.py
 ```
 # Supported Arduino devices
-+ Arduino Uno 
-+ Arduino Uno R3
-+ Arduino Mega 2560
-+ Arduino Mega 2560 R3
-+ Arduino Mega ADK
-+ Arduino Mega ADK R3
++ Arduino boards listed in boards.txt along with their VID:PID  
 
 Other devices having the Arduino VID (0x2341) are shown just as Arduino without specifying their type.  
 Old Arduino boards that use FTDI's VID (0x0403) are shown as FTDI without specifying what product are they.  
 Arduino boards from other vendors are not supported yet.
 
 # What's missing
-+ A list of the different Arduino boards and their respective PID
++ Support of the boards listed in boards.txt and missing VID:PID 
 + A list of the different Arduino boards from other vendors and their respective VID/PID
